@@ -33,19 +33,20 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    function fetchAndUpdate() {
-      db.ref("sensor").once("value")
-        .then(snapshot => {
-          const data = snapshot.val();
-          document.getElementById("temp").textContent = data?.temperature ?? "--";
-          document.getElementById("hum").textContent = data?.humidity ?? "--";
-        })
-        .catch(error => {
-          console.error("❌ Failed to fetch data:", error);
-          document.getElementById("temp").textContent = "--";
-          document.getElementById("hum").textContent = "--";
-        });
+  function fetchAndUpdate() {
+    db.ref("/").once("value")
+      .then(snapshot => {
+      const data = snapshot.val();
+      document.getElementById("temp").textContent = data?.sensor?.temperature ?? "--";
+      document.getElementById("hum").textContent = data?.humidity ?? "--";
+      })
+      .catch(error => {
+      console.error("❌ Failed to fetch data:", error);
+      document.getElementById("temp").textContent = "--";
+      document.getElementById("hum").textContent = "--";
+      });
     }
+
 
     fetchAndUpdate();
     setInterval(fetchAndUpdate, 10000); // update every 10 seconds
